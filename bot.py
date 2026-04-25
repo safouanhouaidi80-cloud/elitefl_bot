@@ -1,7 +1,6 @@
 import os
-import asyncio
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
+from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
 TOKEN = os.environ.get("TOKEN")
 CHANNEL = "@ELITEFL26"
@@ -26,17 +25,14 @@ async def check(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         member = await context.bot.get_chat_member(CHANNEL, query.from_user.id)
         if member.status in ["member", "administrator", "creator"]:
-            await query.message.reply_text("🎉 شكراً لانضمامك! ستصلك التوقعات يومياً.")
+            await query.message.reply_text("🎉 شكراً لانضمامك!")
         else:
             await query.message.reply_text("❌ انضم للقناة أولاً!")
-    except:
+    except Exception as e:
         await query.message.reply_text("❌ انضم للقناة أولاً!")
 
-def main():
-    app = Application.builder().token(TOKEN).build()
+if __name__ == "__main__":
+    app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(check, pattern="check"))
     app.run_polling()
-
-if __name__ == "__main__":
-    main()
