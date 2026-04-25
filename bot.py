@@ -1,6 +1,6 @@
 import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 
 TOKEN = os.environ.get("TOKEN")
 CHANNEL = "@ELITEFL26"
@@ -28,11 +28,11 @@ async def check(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await query.message.reply_text("🎉 شكراً لانضمامك!")
         else:
             await query.message.reply_text("❌ انضم للقناة أولاً!")
-    except Exception as e:
+    except:
         await query.message.reply_text("❌ انضم للقناة أولاً!")
 
 if __name__ == "__main__":
-    app = ApplicationBuilder().token(TOKEN).build()
+    app = Application.builder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(check, pattern="check"))
     app.run_polling()
